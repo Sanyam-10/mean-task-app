@@ -26,7 +26,10 @@ jobs:
 
       - name: Build and push frontend
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/mean-frontend:latest ./frontend
+          cd frontend
+          npm install
+          npm run build -- --project=angular-15-crud
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/mean-frontend:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/mean-frontend:latest
 
       - name: Deploy to VM
