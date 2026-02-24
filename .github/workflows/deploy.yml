@@ -29,7 +29,13 @@ jobs:
           cd frontend
           npm install
           npm run build -- --project=angular-15-crud
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/mean-frontend:latest .
+          cat > Dockerfile.ci << 'DOCKERFILE'
+          FROM nginx:alpine
+          COPY dist/angular-15-crud /usr/share/nginx/html
+          EXPOSE 80
+          CMD ["nginx", "-g", "daemon off;"]
+          DOCKERFILE
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/mean-frontend:latest -f Dockerfile.ci .
           docker push ${{ secrets.DOCKER_USERNAME }}/mean-frontend:latest
 
       - name: Deploy to VM
