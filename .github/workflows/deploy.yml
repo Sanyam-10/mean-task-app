@@ -59,6 +59,7 @@ jobs:
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
           script: |
+            export MONGO_URI="${{ secrets.MONGO_URI }}"
             cd ~/
             docker-compose pull
             docker-compose down
