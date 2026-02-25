@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   backend:
-    image: ssanyam2004/mean-backend:latest
+    image: ${DOCKER_USERNAME}/mean-backend:latest
     container_name: backend
     restart: always
     ports:
@@ -14,7 +14,7 @@ services:
       - mean_network
 
   frontend:
-    image: ssanyam2004/mean-frontend:latest
+    image: ${DOCKER_USERNAME}/mean-frontend:latest
     container_name: frontend
     restart: always
     ports:
@@ -25,7 +25,7 @@ services:
       - mean_network
 
   nginx:
-    image: ssanyam2004/mean-nginx:latest
+    image: ${DOCKER_USERNAME}/mean-nginx:latest
     container_name: nginx_proxy
     restart: always
     ports:
