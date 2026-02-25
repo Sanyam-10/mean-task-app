@@ -38,13 +38,11 @@ services:
       - mean_network
 
   nginx:
-    image: nginx:alpine
+    image: ssanyam2004/mean-nginx:latest
     container_name: nginx_proxy
     restart: always
     ports:
       - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - frontend
       - backend

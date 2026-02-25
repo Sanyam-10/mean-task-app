@@ -38,6 +38,20 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/mean-frontend:latest -f Dockerfile.ci .
           docker push ${{ secrets.DOCKER_USERNAME }}/mean-frontend:latest
 
+      - name: Build and push nginx proxy
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/mean-nginx:latest -f nginx.Dockerfile .
+          docker push ${{ secrets.DOCKER_USERNAME }}/mean-nginx:latest
+
+      - name: Copy docker-compose to VM
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          source: "docker-compose.yml"
+          target: "~/"
+
       - name: Deploy to VM
         uses: appleboy/ssh-action@v0.1.10
         with:
