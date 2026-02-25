@@ -14,11 +14,20 @@ db.mongoose
   })
   .then(() => {
     console.log("Connected to the database!");
+    global.dbError = null;
   })
   .catch(err => {
     console.log("Cannot connect to the database!", err);
-    process.exit();
+    global.dbError = err.toString();
   });
+
+app.get("/api/health", (req, res) => {
+  if (global.dbError) {
+    res.status(500).json({ status: "error", error: global.dbError });
+  } else {
+    res.status(200).json({ status: "ok" });
+  }
+});
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Test application." });
