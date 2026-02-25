@@ -1,6 +1,16 @@
 version: '3.8'
 
 services:
+  mongodb:
+    image: mongo:4.4
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - mean_network
   backend:
     image: ${DOCKER_USERNAME}/mean-backend:latest
     container_name: backend
@@ -9,7 +19,9 @@ services:
       - "8080:8080"
     environment:
       - PORT=8080
-      - MONGO_URI=${MONGO_URI}
+      - MONGO_URI=mongodb://mongodb:27017/cruddb
+    depends_on:
+      - mongodb
     networks:
       - mean_network
 
@@ -35,6 +47,9 @@ services:
       - backend
     networks:
       - mean_network
+
+volumes:
+  mongo_data:
 
 networks:
   mean_network:
